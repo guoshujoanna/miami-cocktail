@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miami Cocktail — 帮我调一杯</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--sun:#F5A623;--sky:#5BB8F5;--pink:#FF6B9D;--cream:#FFFDF7;--sand:#FFF3E0;--ink:#2C2C2C;--mist:#8A8A8A;--card:#FFFFFF;}
+body{background:var(--cream);font-family:'Georgia',serif;min-height:100vh;}
+#app{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 1.5rem;position:relative;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:0.18;pointer-events:none;animation:fb 8s ease-in-out infinite;}
+.b1{width:300px;height:300px;background:var(--sun);top:-80px;right:-60px;}
+.b2{width:250px;height:250px;background:var(--sky);bottom:-60px;left:-80px;animation-delay:3s;}
+.b3{width:180px;height:180px;background:var(--pink);top:40%;left:60%;animation-delay:5s;}
+@keyframes fb{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+.palm{position:absolute;font-size:48px;opacity:0.12;pointer-events:none;}
+.p1{top:10px;left:10px;animation:sw1 6s ease-in-out infinite;}
+.p2{top:20px;right:20px;animation:sw2 6s ease-in-out infinite;}
+@keyframes sw1{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@keyframes sw2{0%,100%{transform:scaleX(-1) rotate(-5deg)}50%{transform:scaleX(-1) rotate(5deg)}}
+.screen{width:100%;max-width:520px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;z-index:2;animation:fi 0.9s ease both;}
+@keyframes fi{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.gi{font-size:56px;margin-bottom:1rem;animation:flt 4s ease-in-out infinite;}
+@keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.ey{font-family:sans-serif;font-size:11px;letter-spacing:3px;color:var(--sky);margin-bottom:1.2rem;text-transform:uppercase;}
+.hl{font-size:30px;color:var(--ink);line-height:1.4;margin-bottom:0.8rem;font-weight:400;}
+.hl span{color:var(--sun);}
+.sl{font-family:sans-serif;font-size:13px;color:var(--mist);margin-bottom:1.5rem;line-height:1.7;}
+#ii{width:100%;background:var(--card);border:1.5px solid #E8E0D0;border-radius:16px;padding:16px 20px;font-size:15px;font-family:'Georgia',serif;color:var(--ink);outline:none;transition:border-color 0.3s;margin-bottom:1rem;}
+#ii::placeholder{color:#C5BFB5;font-style:italic;}
+#ii:focus{border-color:var(--sun);box-shadow:0 0 0 3px rgba(245,166,35,0.1);}
+.mr{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem;}
+.mt{background:var(--sand);border:1px solid #EED9B5;border-radius:20px;padding:7px 16px;font-size:12px;font-family:sans-serif;color:var(--mist);cursor:pointer;transition:all 0.2s;}
+.mt:hover,.mt.on{background:var(--sun);color:#fff;border-color:var(--sun);}
+.bm{background:linear-gradient(135deg,var(--sun),var(--pink));border:none;border-radius:50px;padding:14px 48px;font-size:14px;font-family:sans-serif;letter-spacing:1.5px;color:#fff;cursor:pointer;transition:transform 0.2s;box-shadow:0 4px 20px rgba(245,166,35,0.3);}
+.bm:hover{transform:translateY(-2px);}
+.bg{background:transparent;border:1.5px solid #E0D8CE;border-radius:50px;padding:10px 28px;font-size:12px;font-family:sans-serif;color:var(--mist);cursor:pointer;transition:all 0.2s;margin-top:10px;}
+.bg:hover{border-color:var(--sun);color:var(--sun);}
+.lw{display:flex;flex-direction:column;align-items:center;gap:1.5rem;}
+.sk{font-size:52px;animation:sk 0.6s ease-in-out infinite;}
+@keyframes sk{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
+.lt{font-size:18px;color:var(--ink);}
+.ld span{animation:bl 1.4s infinite;display:inline-block;}
+.ld span:nth-child(2){animation-delay:0.2s;}
+.ld span:nth-child(3){animation-delay:0.4s;}
+@keyframes bl{0%,80%,100%{opacity:0}40%{opacity:1}}
+.rc{background:var(--card);border-radius:24px;padding:2rem;width:100%;box-shadow:0 8px 40px rgba(0,0,0,0.06);border:1px solid #F0E8DC;margin-bottom:1.5rem;text-align:left;}
+.cb{display:inline-block;background:#FFF0F8;border:1px solid #FFB3D4;border-radius:20px;padding:4px 14px;font-size:11px;font-family:sans-serif;color:var(--pink);margin-bottom:0.8rem;}
+.rt{display:inline-block;background:var(--sand);border-radius:20px;padding:4px 14px;font-size:11px;font-family:sans-serif;color:var(--sun);margin-bottom:0.8rem;}
+.di{font-size:48px;float:right;margin:-0.5rem -0.5rem 0 1rem;animation:flt 4s ease-in-out infinite;}
+.dn{font-size:22px;color:var(--ink);margin-bottom:0.4rem;line-height:1.3;}
+.dd{font-family:sans-serif;font-size:13.5px;color:var(--mist);line-height:1.8;margin-bottom:1rem;}
+.ft{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;}
+.ftag{background:#F0FBF5;border:1px solid #B8E8CC;border-radius:12px;padding:3px 10px;font-size:11px;font-family:sans-serif;color:#2E7D52;}
+.dv{height:1px;background:linear-gradient(90deg,transparent,#E8E0D0,transparent);margin:1rem 0;}
+.rtt{font-family:sans-serif;font-size:10px;letter-spacing:2px;color:#C5BFB5;margin-bottom:0.7rem;text-transform:uppercase;}
+.rl{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:1.2rem;}
+.rl li{font-family:sans-serif;font-size:13px;color:var(--ink);display:flex;align-items:center;gap:8px;}
+.rl li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--sun);flex-shrink:0;}
+.mb{background:var(--sand);border-radius:12px;padding:1rem 1.2rem;}
+.mb p{font-family:sans-serif;font-size:13px;color:var(--mist);line-height:2;}
+.ar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;}
+.ab{background:var(--card);border:1.5px solid #E8E0D0;border-radius:50px;padding:10px 22px;font-size:12px;font-family:sans-serif;color:var(--mist);cursor:pointer;transition:all 0.2s;}
+.ab:hover{border-color:var(--pink);color:var(--pink);}
+.ch{font-family:sans-serif;font-size:12px;color:var(--pink);margin-bottom:0.8rem;line-height:1.6;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="palm p1">🌴</div><div class="palm p2">🌴</div>
+
+  <div id="si" class="screen">
+    <div class="gi">🍹</div>
+    <p class="ey">Miami Afternoon</p>
+    <h1 class="hl">今天，有点<span>热</span><br>要不要调一杯？</h1>
+    <p class="sl">看看你手边有什么 — 任何东西都可以写</p>
+    <input id="ii" type="text" placeholder="伏特加、柠檬、榴莲、坚果… 随便写">
+    <div class="mr">
+      <span class="mt" onclick="tm(this,'清爽')">清爽</span>
+      <span class="mt" onclick="tm(this,'甜一点')">甜一点</span>
+      <span class="mt" onclick="tm(this,'微醺就好')">微醺就好</span>
+      <span class="mt" onclick="tm(this,'强一点')">强一点</span>
+      <span class="mt" onclick="tm(this,'无酒精')">无酒精</span>
+      <span class="mt" onclick="tm(this,'创意模式')">🎲 创意模式</span>
+    </div>
+    <button class="bm" onclick="gen()">帮我想一杯 ✦</button>
+  </div>
+
+  <div id="sl2" class="screen" style="display:none">
+    <div class="lw">
+      <div class="sk">🍸</div>
+      <p class="lt">正在帮你想一杯<span class="ld"><span>.</span><span>.</span><span>.</span></span></p>
+      <p class="sl">用你手边的材料</p>
+    </div>
+  </div>
+
+  <div id="sr" class="screen" style="display:none">
+    <p style="font-family:sans-serif;font-size:13px;color:var(--mist);margin-bottom:1rem;">这杯，应该很适合现在的你</p>
+    <div class="rc">
+      <div id="bd"></div>
+      <div class="di" id="ri">🍋</div>
+      <h2 class="dn" id="rn"></h2>
+      <p class="dd" id="rd"></p>
+      <div class="ft" id="rf"></div>
+      <div class="dv"></div>
+      <p class="rtt">配方</p>
+      <ul class="rl" id="rr"></ul>
+      <div class="mb"><p id="rm"></p></div>
+    </div>
+    <div class="ar">
+      <button class="ab" onclick="gen()">再试一杯 ↺</button>
+      <button class="ab" onclick="smg('甜一点')">今天想甜一点 🍓</button>
+      <button class="ab" onclick="smg('创意模式')">换个惊喜 🎲</button>
+      <button class="ab" onclick="gb()">换个材料</button>
+    </div>
+  </div>
+</div>
+<script>
+const FM={酸:['柠檬','青柠','lime','lemon','醋','酸','tamarind'],甜:['草莓','strawberry','芒果','mango','菠萝','pineapple','香蕉','banana','桃子','peach','荔枝','lychee','椰子','coconut','蜂蜜','honey','糖','sugar','枫糖','焦糖','龙眼','榴莲','百香果','passion'],苦:['苦','金巴利','campari','咖啡','coffee','可可','葡萄柚','grapefruit','西柚'],草本:['薄荷','mint','罗勒','basil','迷迭香','rosemary','百里香','thyme','黄瓜','cucumber','芹菜','折耳根','香菜','鱼腥草'],辛辣:['姜','ginger','辣椒','chili','胡椒','pepper','肉桂','花椒','辣','jalapeño'],坚果:['坚果','nut','杏仁','almond','花生','peanut','腰果','核桃','walnut','榛子','hazelnut','椰子'],花香:['玫瑰','rose','接骨木','elderflower','紫罗兰','茉莉','薰衣草','lavender','洛神花','hibiscus'],烟熏:['梅斯卡尔','mezcal','泥煤','peat','威士忌','whisky'],热带:['椰子','coconut','芒果','mango','菠萝','pineapple','百香果','木瓜','番石榴','火龙果','荔枝'],发酵:['泡菜','kimchi','酸菜','康普茶','kombucha','味噌','纳豆','醋']};
+
+const CG={折耳根:{hint:'折耳根草本味带辛，配金酒和青柠会有意外惊喜',rec:'Cucumber Basil Smash'},榴莲:{hint:'榴莲甜而浓烈，配椰子朗姆或香蕉朗姆很有趣',rec:'Banana Daiquiri'},坚果:{hint:'坚果圆润感配杏仁利口酒或波本威士忌是经典搭法',rec:'Old Fashioned'},泡菜:{hint:'泡菜发酵酸味其实很适合调酒，参考Bloody Mary配伏特加',rec:'Spicy Bloody Mary'},花椒:{hint:'花椒的麻感很少见，试试配金酒加青柠平衡',rec:'Gin Basil Smash'},榴莲:{hint:'榴莲配椰子朗姆，比你想象的更好',rec:'Piña Colada'},味噌:{hint:'味噌咸鲜配威士忌出乎意料的好，像Dirty Martini进化版',rec:'Old Fashioned'}};
+
+const DB=[
+{icon:'🥥',name:'Piña Colada',fl:['甜','热带'],keys:['朗姆','rum','椰子','coconut','菠萝','pineapple'],desc:'甜的，圆润的\n像在沙滩上闭着眼睛',recipe:['白朗姆 45ml','椰浆 60ml','菠萝汁 90ml','冰块'],method:'全部放进搅拌机\n加满冰块打匀\n倒入高杯'},
+{icon:'🥭',name:'Mango Margarita',fl:['甜','热带','酸'],keys:['龙舌兰','tequila','芒果','mango','青柠','lime'],desc:'热带的、饱满的\n喝一口就是夏天',recipe:['龙舌兰 45ml','芒果汁 60ml','青柠汁 20ml','盐边'],method:'杯口蘸盐\n全部加冰摇匀\n滤入盐边杯'},
+{icon:'🍍',name:'Jungle Bird',fl:['苦','热带','酸'],keys:['朗姆','rum','菠萝','pineapple','金巴利','campari'],desc:'苦的开头，甜的结尾\n像一只迷路的热带鸟',recipe:['黑朗姆 45ml','金巴利 20ml','菠萝汁 45ml','青柠汁 15ml'],method:'全部加冰摇匀\n双重过滤倒入加冰杯'},
+{icon:'🌺',name:'Mai Tai',fl:['甜','热带'],keys:['朗姆','rum','橙','orange','杏仁','almond'],desc:'经典热带鸡尾酒\n一杯里藏着整个太平洋',recipe:['白朗姆 30ml','深色朗姆 30ml','橙皮利口酒 15ml','青柠汁 20ml','杏仁糖浆 15ml'],method:'除深色朗姆外全部摇匀\n深色朗姆漂浮上层'},
+{icon:'🍉',name:'Watermelon Cooler',fl:['甜','清爽'],keys:['伏特加','vodka','西瓜','watermelon'],desc:'夏天最红的颜色\n凉的，甜的',recipe:['伏特加 45ml','西瓜汁 90ml','青柠汁 15ml','薄荷','冰'],method:'西瓜榨汁过滤\n全部加冰摇匀\n薄荷装饰'},
+{icon:'🐦',name:'Passion Fruit Spritz',fl:['酸','花香','热带'],keys:['百香果','passion fruit','金酒','gin','气泡','prosecco'],desc:'酸的，带花香\n像一个很特别的下午',recipe:['金酒 30ml','百香果汁 45ml','接骨木花糖浆 15ml','普罗塞克补满'],method:'金酒和果汁摇匀\n缓缓倒入普罗塞克'},
+{icon:'🌊',name:'Blue Lagoon',fl:['甜','清爽'],keys:['伏特加','vodka','蓝柑橘','blue curacao'],desc:'蓝色的，很好看\n味道比颜色轻盈',recipe:['伏特加 45ml','蓝柑橘利口酒 20ml','柠檬汁 20ml','气泡水'],method:'加冰直调\n气泡水补满'},
+{icon:'🍌',name:'Banana Daiquiri',fl:['甜','热带'],keys:['朗姆','rum','香蕉','banana'],desc:'甜的，绵的\n不好意思说喜欢但确实喜欢',recipe:['白朗姆 45ml','香蕉 半根','青柠汁 20ml','糖浆 10ml'],method:'全部放进搅拌机\n打到顺滑倒出'},
+{icon:'🍊',name:'Aperol Spritz',fl:['苦','甜','清爽'],keys:['aperol','气泡','prosecco','苦'],desc:'橙色的，微苦\n意大利午后标配',recipe:['Aperol 60ml','普罗塞克 90ml','气泡水 30ml','橙片'],method:'大杯加冰\n依次倒入，轻搅，橙片装饰'},
+{icon:'🍋',name:'Classic Margarita',fl:['酸','清爽'],keys:['龙舌兰','tequila','青柠','lime','君度','cointreau'],desc:'经典永远不会错\n酸、咸、烈一起来',recipe:['龙舌兰 45ml','君度 15ml','青柠汁 30ml','盐边'],method:'杯口蘸盐\n全部加冰摇匀过滤'},
+{icon:'🌅',name:'Tequila Sunrise',fl:['甜','酸'],keys:['龙舌兰','tequila','橙汁','orange juice','石榴','grenadine'],desc:'渐变的橙红色\n像天空慢慢变化',recipe:['龙舌兰 45ml','鲜榨橙汁 90ml','石榴糖浆 15ml'],method:'加冰倒龙舌兰和橙汁\n石榴糖浆沿壁缓缓倒入，不搅'},
+{icon:'🍊',name:'Paloma',fl:['酸','苦','清爽'],keys:['龙舌兰','tequila','葡萄柚','grapefruit','西柚'],desc:'墨西哥人比玛格丽特更爱它\n微苦，很解渴',recipe:['龙舌兰 45ml','葡萄柚汁 60ml','青柠汁 15ml','盐','气泡水'],method:'杯口蘸盐加冰\n倒入材料，气泡水补满'},
+{icon:'🌸',name:'French 75',fl:['酸','花香'],keys:['金酒','gin','香槟','champagne','柠檬','lemon'],desc:'优雅的，带气泡\n喝完想再要一杯',recipe:['金酒 30ml','柠檬汁 20ml','糖浆 10ml','香槟补满'],method:'金酒、柠檬、糖浆摇匀\n倒入香槟杯，缓缓加香槟'},
+{icon:'🌿',name:'Classic Mojito',fl:['草本','清爽','酸'],keys:['朗姆','rum','薄荷','mint','青柠','lime'],desc:'清的，凉的\n有时候简单就是最好的',recipe:['白朗姆 45ml','薄荷叶 10片','青柠 半个','糖 1茶匙','气泡水'],method:'薄荷青柠糖压碎\n加冰和朗姆\n气泡水补满轻搅'},
+{icon:'🥒',name:'Cucumber Basil Smash',fl:['草本','清爽'],keys:['金酒','gin','黄瓜','cucumber','罗勒','basil'],desc:'绿色系的，清淡\n很适合什么都不想的下午',recipe:['金酒 45ml','黄瓜 3片','罗勒叶 4片','柠檬汁 20ml','糖浆 10ml'],method:'黄瓜和罗勒压碎\n加入其他材料和冰摇匀'},
+{icon:'Gin Basil Smash',name:'Gin Basil Smash',fl:['草本','清爽'],keys:['金酒','gin','罗勒','basil','花椒'],desc:'草本的，微辣\n喝完嘴里很干净',recipe:['金酒 45ml','罗勒叶 6片','柠檬汁 25ml','糖浆 15ml'],method:'罗勒压碎摇匀\n双重过滤倒入'},
+{icon:'🌸',name:'Lavender Collins',fl:['花香','草本'],keys:['金酒','gin','薰衣草','lavender'],desc:'紫色的，带花香\n喝完心情会好',recipe:['金酒 45ml','薰衣草糖浆 15ml','柠檬汁 20ml','气泡水'],method:'摇匀倒入加冰高杯\n气泡水补满'},
+{icon:'🌺',name:'Hibiscus Margarita',fl:['花香','酸'],keys:['龙舌兰','tequila','洛神花','hibiscus'],desc:'深红色，带花香\n有点神秘',recipe:['龙舌兰 45ml','洛神花糖浆 20ml','青柠汁 25ml','盐边'],method:'杯口蘸盐\n全部加冰摇匀过滤'},
+{icon:'🌿',name:'Mint Julep',fl:['草本','清爽'],keys:['波本','bourbon','威士忌','whiskey','薄荷','mint'],desc:'肯塔基赛马场的饮料\n喝了会觉得很洒脱',recipe:['波本 60ml','薄荷叶 8片','糖浆 15ml','碎冰'],method:'薄荷糖浆轻压杯底\n填满碎冰，倒入波本'},
+{icon:'☕',name:'Espresso Martini',fl:['苦','甜'],keys:['伏特加','vodka','咖啡','coffee','espresso'],desc:'苦的，香的，喝完不想睡\n派对上永远受欢迎',recipe:['伏特加 45ml','咖啡利口酒 15ml','浓缩咖啡 30ml'],method:'大力摇匀至有泡沫\n过滤倒入马天尼杯'},
+{icon:'🤎',name:'White Russian',fl:['甜','苦'],keys:['伏特加','vodka','咖啡','coffee','奶油','cream'],desc:'奶油漂浮在上面\n搅进去喝',recipe:['伏特加 45ml','咖啡利口酒 20ml','淡奶油 30ml'],method:'伏特加和咖啡利口酒加冰直调\n奶油缓缓浮在上面'},
+{icon:'🥃',name:'Old Fashioned',fl:['烟熏','甜','苦'],keys:['波本','bourbon','威士忌','whiskey','苦精','bitters','坚果'],desc:'最简单也是最经典的\n三种材料，没有废话',recipe:['波本 60ml','糖浆 10ml','苦精 2dash','橙皮'],method:'糖浆和苦精放杯底\n加大冰块和波本搅拌30秒'},
+{icon:'🌆',name:'New York Sour',fl:['酸','甜','烟熏'],keys:['波本','bourbon','威士忌','whiskey','红酒','red wine'],desc:'漂浮红酒那层很好看\n味道也有层次',recipe:['波本 45ml','柠檬汁 20ml','糖浆 10ml','红葡萄酒漂浮'],method:'波本、柠檬、糖浆摇匀\n红酒沿吧匙漂浮上层'},
+{icon:'🥃',name:'Whiskey Sour',fl:['酸','甜'],keys:['波本','bourbon','威士忌','whiskey','柠檬','lemon'],desc:'有泡沫的那种\n蛋清让口感变得丝滑',recipe:['波本 45ml','柠檬汁 25ml','糖浆 15ml','蛋清 20ml'],method:'先干摇30秒\n加冰再摇15秒过滤'},
+{icon:'🌵',name:'Spicy Margarita',fl:['辛辣','酸'],keys:['龙舌兰','tequila','辣椒','chili','辣','jalapeño'],desc:'辣的，让你清醒那种\n喝完嘴唇有点热',recipe:['龙舌兰 45ml','青柠汁 25ml','辣椒片 3片','盐边'],method:'辣椒在摇酒壶泡几分钟\n加入其他材料摇匀过滤'},
+{icon:'🌵',name:'Ranch Water',fl:['清爽','酸'],keys:['龙舌兰','tequila','气泡水','sparkling'],desc:'三种材料，简单到极致\n越热越好喝',recipe:['龙舌兰 45ml','青柠汁 15ml','气泡矿泉水补满'],method:'加冰直调\n挤一块青柠'},
+{icon:'🌵',name:'Mezcal Negroni',fl:['烟熏','苦'],keys:['梅斯卡尔','mezcal','金巴利','campari'],desc:'烟熏的苦，很复杂\n喝完嘴里有烟火气',recipe:['梅斯卡尔 45ml','甜苦艾酒 30ml','金巴利 30ml'],method:'全部加冰搅拌40秒\n过滤倒入加冰岩石杯'},
+{icon:'🍓',name:'Strawberry Daiquiri',fl:['甜','酸'],keys:['朗姆','rum','草莓','strawberry'],desc:'甜的，红的，有点梦幻\n像在海边吃到的草莓',recipe:['白朗姆 45ml','草莓 4颗','青柠汁 20ml','糖浆 10ml'],method:'全部放进搅拌机\n打匀倒出'},
+{icon:'🫐',name:'Blueberry Mojito',fl:['甜','草本'],keys:['朗姆','rum','蓝莓','blueberry','薄荷','mint'],desc:'蓝色的，带薄荷凉感\n压碎的瞬间颜色很美',recipe:['白朗姆 45ml','蓝莓 一把','薄荷叶 10片','青柠汁 20ml','气泡水'],method:'蓝莓和薄荷压碎\n加冰和朗姆，气泡水补满'},
+{icon:'💜',name:'Raspberry Gimlet',fl:['酸','甜'],keys:['金酒','gin','覆盆子','raspberry'],desc:'粉紫色的，微酸\n很适合一个人安静喝',recipe:['金酒 45ml','覆盆子 6颗','青柠汁 20ml','糖浆 15ml'],method:'覆盆子压碎\n加入其他材料和冰摇匀过滤'},
+{icon:'🍇',name:'Berry Sangria',fl:['甜','果香'],keys:['红葡萄酒','red wine','莓果','berry','草莓','蓝莓'],desc:'一大壶的快乐\n浸泡一夜更好喝',recipe:['红葡萄酒 300ml','混合莓果 一杯','白兰地 45ml','橙汁 60ml'],method:'所有材料混合\n冷藏至少4小时\n喝前加冰和气泡水'},
+{icon:'🍑',name:'Bellini',fl:['甜','花香'],keys:['普罗塞克','prosecco','香槟','champagne','桃子','peach'],desc:'威尼斯的下午\n最温柔的一杯',recipe:['普罗塞克 120ml','白桃汁 30ml'],method:'桃汁先倒入\n缓缓加普罗塞克，不搅'},
+{icon:'🍊',name:'Mimosa',fl:['甜','清爽'],keys:['香槟','champagne','橙汁','orange','prosecco'],desc:'早午餐的标配\n喝了觉得今天很好',recipe:['香槟 90ml','鲜榨橙汁 90ml'],method:'橙汁先倒\n缓缓加香槟，不搅'},
+{icon:'🌿',name:'Hugo Spritz',fl:['花香','草本','清爽'],keys:['普罗塞克','prosecco','接骨木','elderflower','薄荷','mint'],desc:'比Aperol Spritz更轻盈\n带接骨木花香气',recipe:['普罗塞克 90ml','接骨木花利口酒 20ml','气泡水 30ml','薄荷叶'],method:'大杯加冰依次倒入\n薄荷和青柠装饰'},
+{icon:'🫙',name:'Cranberry Cosmo',fl:['酸','甜'],keys:['伏特加','vodka','蔓越莓','cranberry'],desc:'城市感，粉红色\n喝起来比看起来更有力量',recipe:['伏特加 45ml','蔓越莓汁 45ml','君度 15ml','青柠汁 15ml'],method:'全部加冰摇匀\n过滤倒入马天尼杯'},
+{icon:'🌊',name:'Dark & Stormy',fl:['辛辣','甜'],keys:['黑朗姆','dark rum','朗姆','rum','姜汁','ginger beer'],desc:'深色的，有姜的辛\n像暴风雨前的海面',recipe:['黑朗姆 45ml','姜汁啤酒 150ml','青柠'],method:'铜杯加冰\n姜汁啤酒先倒\n黑朗姆漂浮上层'},
+{icon:'😈',name:'El Diablo',fl:['甜','辛辣','酸'],keys:['龙舌兰','tequila','黑醋栗','cassis','姜汁','ginger'],desc:'叫恶魔，但其实很好喝\n姜汁和黑醋栗很意外',recipe:['龙舌兰 45ml','黑醋栗利口酒 15ml','姜汁啤酒补满','青柠'],method:'龙舌兰和黑醋栗加冰倒入\n姜汁啤酒补满'},
+{icon:'☕',name:'Irish Coffee',fl:['苦','甜'],keys:['爱尔兰','irish','威士忌','whiskey','咖啡','coffee'],desc:'热的，暖的\n奶油下面藏着整杯咖啡',recipe:['爱尔兰威士忌 45ml','热咖啡 120ml','糖 1茶匙','鲜奶油'],method:'糖和威士忌加入热咖啡搅匀\n奶油轻轻浮在上面'},
+{icon:'🌹',name:"Bee's Knees",fl:['甜','酸','花香'],keys:['金酒','gin','蜂蜜','honey','柠檬','lemon'],desc:'1920年代的酒\n甜的，有花香，很温柔',recipe:['金酒 45ml','蜂蜜糖浆 20ml','柠檬汁 25ml'],method:'蜂蜜加等量热水化开冷却\n全部加冰摇匀过滤'},
+{icon:'💜',name:'Aviation',fl:['花香','酸'],keys:['金酒','gin','紫罗兰','violet','樱桃','cherry'],desc:'淡紫色的，带花香\n像一杯天空',recipe:['金酒 45ml','紫罗兰利口酒 15ml','柠檬汁 20ml','黑樱桃利口酒 5ml'],method:'全部加冰摇匀\n过滤倒入冰镇马天尼杯'},
+{icon:'🫚',name:'Penicillin',fl:['烟熏','草本','酸'],keys:['威士忌','whiskey','苏格兰','scotch','姜','ginger','蜂蜜','honey'],desc:'一个现代经典\n蜂蜜姜汁和泥煤威士忌',recipe:['苏格兰威士忌 45ml','蜂蜜姜汁 20ml','柠檬汁 20ml','泥煤威士忌漂浮'],method:'前三样加冰摇匀\n过滤倒入，泥煤漂浮'},
+{icon:'🥃',name:'Pisco Sour',fl:['酸','甜'],keys:['皮斯科','pisco','柠檬','lemon'],desc:'秘鲁的国民饮料\n蛋清泡沫上滴几滴苦精',recipe:['皮斯科 45ml','柠檬汁 25ml','糖浆 15ml','蛋清','苦精'],method:'干摇再加冰摇\n过滤倒入\n苦精滴在泡沫上'},
+{icon:'🌿',name:'Virgin Mojito',fl:['草本','清爽'],keys:['无酒精','mocktail','薄荷','mint','青柠','lime'],desc:'不含酒精，同样清爽\n开车的人也可以喝',recipe:['薄荷叶 10片','青柠 半个','糖 1茶匙','气泡水','冰'],method:'薄荷青柠糖压碎\n加碎冰，气泡水补满'},
+{icon:'🍉',name:'Watermelon Agua Fresca',fl:['甜','清爽'],keys:['西瓜','watermelon','无酒精','mocktail'],desc:'墨西哥街边卖的那种\n天然的，很解渴',recipe:['西瓜 半个','青柠汁 20ml','薄荷','气泡水'],method:'西瓜榨汁过滤\n加青柠，气泡水补满加冰'},
+{icon:'🌺',name:'Hibiscus Cooler',fl:['酸','花香'],keys:['洛神花','hibiscus','无酒精','mocktail'],desc:'深红色，微酸\n不含酒精，很好喝',recipe:['洛神花茶 200ml','青柠汁 20ml','蜂蜜 15ml','气泡水'],method:'洛神花茶冷泡过滤\n加青柠蜂蜜摇匀\n气泡水补满'},
+{icon:'🥭',name:'Mango Lassi Fizz',fl:['甜','热带'],keys:['芒果','mango','酸奶','yogurt','无酒精','mocktail'],desc:'印度风情，加了气泡\n浓的，甜的，有点特别',recipe:['芒果汁 90ml','酸奶 60ml','姜汁啤酒 60ml'],method:'芒果汁和酸奶摇匀\n倒入冰杯，姜汁啤酒补满'},
+{icon:'🍓',name:'Strawberry Basil Smash',fl:['甜','草本'],keys:['金酒','gin','草莓','strawberry','罗勒','basil'],desc:'草莓和罗勒，听起来奇怪\n喝完你会明白为什么',recipe:['金酒 45ml','草莓 3颗','罗勒 3片','柠檬汁 20ml'],method:'草莓罗勒压碎\n加入其他材料和冰摇匀过滤'},
+{icon:'🍑',name:'Peach Bourbon Smash',fl:['甜','烟熏'],keys:['波本','bourbon','威士忌','whiskey','桃子','peach'],desc:'带一点烟熏，带一点甜\n像夏日傍晚的感觉',recipe:['波本 45ml','桃子 半个','柠檬汁 20ml','枫糖浆 10ml'],method:'桃子压碎\n加入所有材料和冰\n大力摇15秒过滤'},
+{icon:'🍹',name:'Rum Punch',fl:['甜','热带'],keys:['朗姆','rum','橙汁','orange','菠萝','pineapple'],desc:'颜色好看，味道也好\n派对里最受欢迎',recipe:['深色朗姆 45ml','橙汁 60ml','菠萝汁 60ml','石榴糖浆 15ml'],method:'全部加冰直调\n石榴糖浆最后倒\n插一片菠萝'},
+{icon:'🏝️',name:'Painkiller',fl:['甜','热带','坚果'],keys:['朗姆','rum','菠萝','pineapple','椰子','coconut'],desc:'加勒比海的饮料\n甜的，让你忘记烦恼',recipe:['深色朗姆 60ml','菠萝汁 120ml','橙汁 30ml','椰浆 30ml'],method:'全部加冰摇匀\n倒入加冰杯\n撒一点肉豆蔻粉'},
+{icon:'🍋',name:'Lemon Drop',fl:['酸','甜'],keys:['伏特加','vodka','柠檬','lemon'],desc:'糖霜杯边，一口很酸\n然后突然有点甜',recipe:['伏特加 45ml','柠檬汁 20ml','君度 15ml','糖浆 10ml'],method:'杯口蘸糖\n全部加冰摇匀\n过滤倒入糖霜杯'},
+{icon:'🫙',name:'Moscow Mule',fl:['辛辣','清爽'],keys:['伏特加','vodka','姜汁','ginger beer','青柠','lime'],desc:'铜杯装的，凉的\n姜汁让它很有个性',recipe:['伏特加 45ml','姜汁啤酒 150ml','青柠'],method:'铜杯加冰\n倒入伏特加\n姜汁啤酒补满，挤青柠'},
+];
+
+const CREATIVE=[
+{icon:'🎲',name:'The Mystery Sour',fl:['酸','创意'],badge:true,desc:'没有完全一样的配方\n但酸甜的骨架永远不会错',recipe:['任意基酒 45ml','酸味（柠檬/青柠/醋）20ml','甜味（糖浆/蜂蜜/果汁）15ml','冰块'],method:'比例记住：2份酒、1份酸、半份甜\n全部摇匀，尝一下再调整\n没有标准答案'},
+{icon:'🌀',name:'Freestyle Fizz',fl:['清爽','创意'],badge:true,desc:'用你手边任何东西加气泡水\n比你想象的更容易好喝',recipe:['任意果汁或果泥 60ml','任意基酒 30ml（可不加）','气泡水补满','冰和柑橘'],method:'果汁先倒，加冰，倒酒\n气泡水轻轻补满\n挤一点柑橘进去\n就这样'},
+{icon:'🧪',name:'The Experiment',fl:['未知','创意'],badge:true,desc:'你的材料组合是独一无二的\n所以这杯酒也应该是',recipe:['主材料 45ml','配角材料 30ml','酸味 15ml','甜味 10ml'],method:'草本配柑橘，甜配酸，烈配甜\n先少量尝试\n不满意就调整比例'},
+];
+
+let moods=[],last=null;
+
+function tm(el,m){el.classList.toggle('on');moods=el.classList.contains('on')?[...moods,m]:moods.filter(x=>x!==m);}
+function smg(m){moods=[m];document.querySelectorAll('.mt').forEach(t=>t.classList.toggle('on',t.textContent.includes(m)));gen();}
+function show(id){['si','sl2','sr'].forEach(s=>document.getElementById(s).style.display='none');document.getElementById(id).style.display='flex';window.scrollTo(0,0);}
+function dfl(inp){const f=new Set();const s=inp.toLowerCase();for(const[k,ws]of Object.entries(FM)){if(ws.some(w=>s.includes(w.toLowerCase())))f.add(k);}return[...f];}
+
+function gen(){
+  const inp=document.getElementById('ii').value.toLowerCase().trim();
+  show('sl2');
+  setTimeout(()=>{
+    let pick=null,isC=false,hint='';
+    if(moods.includes('创意模式')){pick=CREATIVE[Math.floor(Math.random()*CREATIVE.length)];isC=true;}
+    else{
+      for(const[w,g]of Object.entries(CG)){
+        if(inp.includes(w)){hint=g.hint;pick=DB.find(r=>r.name===g.rec)||null;isC=true;break;}
+      }
+      if(!pick){
+        const sc=[];
+        for(const r of DB){
+          let s=0;
+          for(const k of r.keys){if(inp.includes(k.toLowerCase()))s+=2;}
+          const ifl=dfl(inp);
+          for(const f of ifl){if(r.fl.includes(f))s++;}
+          if(moods.includes('清爽')&&r.fl.includes('清爽'))s+=2;
+          if(moods.includes('甜一点')&&r.fl.includes('甜'))s+=2;
+          if(moods.includes('强一点')&&(r.keys.includes('龙舌兰')||r.keys.includes('威士忌')||r.keys.includes('梅斯卡尔')))s+=2;
+          if(moods.includes('微醺就好')&&(r.keys.includes('气泡')||r.keys.includes('prosecco')))s+=2;
+          if(moods.includes('无酒精')&&r.keys.includes('无酒精'))s+=5;
+          if(s>0)sc.push({r,s});
+        }
+        sc.sort((a,b)=>b.s-a.s);
+        if(sc.length>0){
+          const top=sc.filter(m=>m.s===sc[0].s);
+          pick=top[Math.floor(Math.random()*top.length)].r;
+          if(pick===last&&top.length>1)pick=top[(top.indexOf(top.find(t=>t.r===last))+1)%top.length].r;
+        }
+      }
+      if(!pick){pick=CREATIVE[Math.floor(Math.random()*CREATIVE.length)];isC=true;hint='没有完全一样的，但可以试试这个感觉';}
+    }
+    last=pick;
+    const bd=document.getElementById('bd');
+    bd.innerHTML=isC?'<div class="cb">✦ 创意推荐</div>':'<div class="rt">TODAY\'S PICK</div>';
+    if(hint)bd.innerHTML+=`<p class="ch">${hint}</p>`;
+    document.getElementById('ri').textContent=pick.icon;
+    document.getElementById('rn').textContent=pick.name;
+    document.getElementById('rd').innerHTML=pick.desc.replace(/\n/g,'<br>');
+    const ft=document.getElementById('rf');ft.innerHTML='';
+    if(pick.fl)pick.fl.forEach(f=>{const s=document.createElement('span');s.className='ftag';s.textContent=f;ft.appendChild(s);});
+    const ul=document.getElementById('rr');ul.innerHTML='';
+    pick.recipe.forEach(i=>{const li=document.createElement('li');li.textContent=i;ul.appendChild(li);});
+    document.getElementById('rm').innerHTML=pick.method.replace(/\n/g,'<br>');
+    show('sr');
+  },2200);
+}
+function gb(){show('si');}
+document.getElementById('ii').addEventListener('keydown',e=>{if(e.key==='Enter')gen();});
+</script>
+</body>
+</html>
